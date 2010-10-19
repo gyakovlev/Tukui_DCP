@@ -1,3 +1,4 @@
+local noscalemult = TukuiDB.mult * TukuiCF["general"].uiscale
 local fadeInTime, fadeOutTime, maxAlpha, animScale, iconSize, holdTime, ignoredSpells
 local cooldowns, animating, watching = { }, { }, { }
 local GetTime = GetTime
@@ -12,7 +13,7 @@ local defaultsettings = {
     petOverlay = {1,1,1},
     ignoredSpells = "",
     x = UIParent:GetWidth()/2, 
-    y = UIParent:GetHeight()/2 
+    y = UIParent:GetHeight()/2
 }
 
 local DCP = CreateFrame("frame")
@@ -22,14 +23,25 @@ DCP:RegisterForDrag("LeftButton")
 DCP:SetScript("OnDragStart", function(self) self:StartMoving() end)
 DCP:SetScript("OnDragStop", function(self) 
     self:StopMovingOrSizing() 
-    DCP_Saved.x = self:GetLeft()+self:GetWidth()/2 
-    DCP_Saved.y = self:GetBottom()+self:GetHeight()/2 
+    DCP_Saved.x = self:GetLeft()+self:GetWidth()/2
+    DCP_Saved.y = self:GetBottom()+self:GetHeight()/2
     self:ClearAllPoints() 
     self:SetPoint("CENTER",UIParent,"BOTTOMLEFT",DCP_Saved.x,DCP_Saved.y)
 end)
 
-local DCPT = DCP:CreateTexture(nil,"BACKGROUND")
-DCPT:SetAllPoints(DCP)
+local DCPT = DCP:CreateTexture(nil,"ARTWORK")
+DCPT:SetTexCoord(.08, .92, .08, .92)
+
+DCPT:SetPoint("TOPLEFT",DCP,"TOPLEFT",noscalemult*2,-noscalemult*2)
+DCPT:SetPoint("BOTTOMRIGHT",DCP,"BOTTOMRIGHT",-noscalemult*2,noscalemult*2)
+DCP:SetBackdrop({
+		bgFile = TukuiCF["media"].blank,
+		edgeFile = TukuiCF["media"].blank,
+		tile = false, tileSize = 0, edgeSize = noscalemult,
+		insets = {left = -noscalemult, right = -noscalemult, top = -noscalemult, bottom = -noscalemult}
+	})
+DCP:SetBackdropBorderColor(unpack(TukuiCF["media"].bordercolor))
+DCP:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
 
 -----------------------
 -- Utility Functions --
@@ -56,7 +68,7 @@ local function RefreshLocals()
     fadeOutTime = DCP_Saved.fadeOutTime
     maxAlpha = DCP_Saved.maxAlpha
     animScale = DCP_Saved.animScale
-    iconSize = DCP_Saved.iconSize
+    iconSize = TukuiDB.Scale(DCP_Saved.iconSize)
     holdTime = DCP_Saved.holdTime
 
     ignoredSpells = { }
@@ -240,7 +252,7 @@ SLASH_DOOMCOOLDOWNPULSE3 = "/doomcooldownpulse"
 
 function DCP:CreateOptionsFrame()
     local sliders = {
-        { text = "Icon Size", value = "iconSize", min = 30, max = 125, step = 5 },
+        { text = "Icon Size", value = "iconSize", min = 30, max = 125, step = 1 },
         { text = "Fade In Time", value = "fadeInTime", min = 0, max = 1.5, step = 0.1 },
         { text = "Fade Out Time", value = "fadeOutTime", min = 0, max = 1.5, step = 0.1 },
         { text = "Max Opacity", value = "maxAlpha", min = 0, max = 1, step = 0.1 },

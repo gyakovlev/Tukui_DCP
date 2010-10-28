@@ -135,6 +135,9 @@ local function OnUpdate(_,update)
             runtimer = 0
             DCPT:SetTexture(nil)
             DCPT:SetVertexColor(1,1,1)
+	    DCP:SetBackdropBorderColor(0,0,0,0)
+            DCP:SetBackdropColor(0,0,0,0)
+	    
         else
             if (not DCPT:GetTexture()) then
                 DCPT:SetTexture(animating[1][1])
@@ -153,6 +156,9 @@ local function OnUpdate(_,update)
             local scale = iconSize+(iconSize*((animScale-1)*(runtimer/(fadeInTime+holdTime+fadeOutTime))))
             DCP:SetWidth(scale)
             DCP:SetHeight(scale)
+	    DCP:SetBackdropBorderColor(unpack(TukuiDB["media"].bordercolor))
+            DCP:SetBackdropColor(unpack(TukuiDB["media"].backdropcolor))
+	    
         end
     end
 end

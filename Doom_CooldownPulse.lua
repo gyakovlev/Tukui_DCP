@@ -156,8 +156,8 @@ local function OnUpdate(_,update)
             local scale = iconSize+(iconSize*((animScale-1)*(runtimer/(fadeInTime+holdTime+fadeOutTime))))
             DCP:SetWidth(scale)
             DCP:SetHeight(scale)
-	    DCP:SetBackdropBorderColor(unpack(TukuiDB["media"].bordercolor))
-            DCP:SetBackdropColor(unpack(TukuiDB["media"].backdropcolor))
+	    DCP:SetBackdropBorderColor(unpack(TukuiCF["media"].bordercolor))
+            DCP:SetBackdropColor(unpack(TukuiCF["media"].backdropcolor))
 	    
         end
     end
